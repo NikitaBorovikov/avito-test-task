@@ -1,6 +1,8 @@
 package config
 
 import (
+	"time"
+
 	"github.com/ilyakaznacheev/cleanenv"
 	"github.com/joho/godotenv"
 )
@@ -10,13 +12,15 @@ const (
 )
 
 type Config struct {
-	Server Server
+	Server Server `yaml:"server"`
 	DB     DB
 }
 
 type Server struct {
-	Host string
-	Port int
+	Host         string        `yaml:"host"`
+	Port         int           `yaml:"port"`
+	ReadTimeout  time.Duration `yaml:"read_timeout"`
+	WriteTimeout time.Duration `yaml:"write_timeout"`
 }
 
 type DB struct {
@@ -25,7 +29,7 @@ type DB struct {
 	Password string `env:"DB_PASSWORD"`
 	Name     string `env:"DB_NAME"`
 	Port     int    `env:"DB_PORT"`
-	Driver   string `env:"DB_DRIVER"` // Заполнить .env файл
+	Driver   string `env:"DB_DRIVER"`
 }
 
 func InitConfig() (*Config, error) {
