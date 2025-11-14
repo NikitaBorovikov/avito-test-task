@@ -7,6 +7,11 @@ type CreateTeamRequest struct {
 	Members  []Member `json:"members"`
 }
 
+type SetUserActiveRequest struct {
+	UserID   string `json:"user_id"`
+	IsActive bool   `json:"is_active"`
+}
+
 type Member struct {
 	UserID   string `json:"user_id"`
 	Username string `json:"username"`

@@ -20,3 +20,7 @@ func (r *UserRepo) GetByID(userID string) (*models.User, error) {
 func (r *UserRepo) Update(user *models.User) (*models.User, error) {
 	return nil, nil
 }
+
+func (uc *UserRepo) SetUserActive(userID string, isActive bool) (*models.User, error) {
+	return nil, nil
+}

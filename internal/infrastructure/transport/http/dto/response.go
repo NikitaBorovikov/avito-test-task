@@ -16,6 +16,17 @@ type GetUserReviewPRResponse struct {
 	PullRequests []PullRequestShort `json:"pull_requests"`
 }
 
+type SetUserActiveResponse struct {
+	User User `json:"user"`
+}
+
+type User struct {
+	UserID   string `json:"user_id"`
+	Username string `json:"username"`
+	TeamName string `json:"team_name"`
+	IsActive bool   `json:"is_active"`
+}
+
 type ErrorResponse struct {
 	Code    string `json:"code"`
 	Message string `json:"message"`
@@ -99,5 +110,20 @@ func NewGetUserReviewPRResponse(userID string, prs []models.PullRequest) *GetUse
 	return &GetUserReviewPRResponse{
 		UserID:       userID,
 		PullRequests: pullRequests,
+	}
+}
+
+func NewSetUserActiveResponse(teamName string, user *models.User) *SetUserActiveResponse {
+	if user == nil {
+		return nil
+	}
+
+	return &SetUserActiveResponse{
+		User: User{
+			UserID:   user.ID,
+			Username: user.Name,
+			TeamName: teamName,
+			IsActive: user.IsActive,
+		},
 	}
 }
