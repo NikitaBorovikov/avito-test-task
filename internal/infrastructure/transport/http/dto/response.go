@@ -1,6 +1,9 @@
 package dto
 
-import "avitoTestTask/internal/core/models"
+import (
+	"avitoTestTask/internal/core/models"
+	"time"
+)
 
 type CreateTeamOKResponse struct {
 	Team Team `json:"team"`
@@ -54,6 +57,19 @@ type PullRequest struct {
 	AuthorID          string          `json:"author_id"`
 	Status            models.PRStatus `json:"status"`
 	AssignedReviewers []string        `json:"assigned_reviewers"`
+}
+
+type MergePRResponse struct {
+	PullRequest PR `json:"pr"`
+}
+
+type PR struct {
+	PullRequestID     string          `json:"pull_request_id"`
+	PullRequestName   string          `json:"pull_request_name"`
+	AuthorID          string          `json:"author_id"`
+	Status            models.PRStatus `json:"status"`
+	AssignedReviewers []string        `json:"assigned_reviewers"`
+	MergedAt          time.Time       `json:"mergedAt"`
 }
 
 func NewErrorResponse(code, msg string) ErrorResponse {
@@ -152,6 +168,23 @@ func NewCreatePRResponse(pr *models.PullRequest) *CreatePRResponse {
 			AuthorID:          pr.AuthorID,
 			Status:            pr.Status,
 			AssignedReviewers: pr.Reviewers,
+		},
+	}
+}
+
+func NewMergePRResponse(pr *models.PullRequest) *MergePRResponse {
+	if pr == nil {
+		return nil
+	}
+
+	return &MergePRResponse{
+		PullRequest: PR{
+			PullRequestID:     pr.ID,
+			PullRequestName:   pr.Title,
+			AuthorID:          pr.AuthorID,
+			Status:            pr.Status,
+			AssignedReviewers: pr.Reviewers,
+			MergedAt:          pr.MergedAt,
 		},
 	}
 }

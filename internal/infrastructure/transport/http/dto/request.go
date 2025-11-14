@@ -18,6 +18,10 @@ type CreatePRRequest struct {
 	AuthorID        string `json:"author_id"`
 }
 
+type MergePRRequest struct {
+	PullRequestID string `json:"pull_request_id"`
+}
+
 type Member struct {
 	UserID   string `json:"user_id"`
 	Username string `json:"username"`

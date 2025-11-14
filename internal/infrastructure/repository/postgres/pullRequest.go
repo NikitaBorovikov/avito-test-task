@@ -20,3 +20,7 @@ func (r *PullRequestRepo) Update(pr *models.PullRequest) (*models.PullRequest, e
 func (r *PullRequestRepo) GetByReviewer(userID string) ([]models.PullRequest, error) {
 	return nil, nil
 }
+
+func (r *PullRequestRepo) Merge(prID string) (*models.PullRequest, error) {
+	return nil, nil
+}
