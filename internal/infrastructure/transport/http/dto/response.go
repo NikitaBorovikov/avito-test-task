@@ -11,6 +11,11 @@ type GetTeamByNameResponse struct {
 	Members  []Member `json:"members"`
 }
 
+type GetUserReviewPRResponse struct {
+	UserID       string             `json:"user_id"`
+	PullRequests []PullRequestShort `json:"pull_requests"`
+}
+
 type ErrorResponse struct {
 	Code    string `json:"code"`
 	Message string `json:"message"`
@@ -19,6 +24,13 @@ type ErrorResponse struct {
 type Team struct {
 	TeamName string   `json:"team_name"`
 	Members  []Member `json:"members"`
+}
+
+type PullRequestShort struct {
+	PullRequestID   string          `json:"pull_request_id"`
+	PullRequestName string          `json:"pull_request_name"`
+	AuthorID        string          `json:"author_id"`
+	Status          models.PRStatus `json:"status"`
 }
 
 func NewErrorResponse(code, msg string) ErrorResponse {
@@ -69,5 +81,23 @@ func NewGetTeamByNameResponse(team *models.Team) *GetTeamByNameResponse {
 	return &GetTeamByNameResponse{
 		TeamName: team.Name,
 		Members:  members,
+	}
+}
+
+func NewGetUserReviewPRResponse(userID string, prs []models.PullRequest) *GetUserReviewPRResponse {
+	pullRequests := make([]PullRequestShort, 0, len(prs))
+
+	for _, p := range prs {
+		pullRequest := PullRequestShort{
+			PullRequestID:   p.ID,
+			PullRequestName: p.Title,
+			AuthorID:        p.AuthorID,
+			Status:          p.Status,
+		}
+		pullRequests = append(pullRequests, pullRequest)
+	}
+	return &GetUserReviewPRResponse{
+		UserID:       userID,
+		PullRequests: pullRequests,
 	}
 }
