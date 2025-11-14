@@ -26,3 +26,7 @@ func (uc *UserUC) GetByID(userID string) (*models.User, error) {
 func (uc *UserUC) Update(user *models.User) (*models.User, error) {
 	return nil, nil
 }
+
+func (uc *UserUC) SetUserActive(userID string, isActive bool) (*models.User, error) {
+	return nil, nil
+}

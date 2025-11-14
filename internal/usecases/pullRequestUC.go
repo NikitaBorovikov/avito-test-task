@@ -26,3 +26,11 @@ func (uc *PullRequestUC) Update(pr *models.PullRequest) (*models.PullRequest, er
 func (uc *PullRequestUC) GetByReviewer(userID string) ([]models.PullRequest, error) {
 	return nil, nil
 }
+
+func (uc *PullRequestUC) Merge(prID string) (*models.PullRequest, error) {
+	return nil, nil
+}
+
+func (uc *PullRequestUC) Reassign(prID, oldUserID string) (*models.PullRequest, error) {
+	return nil, nil
+}
