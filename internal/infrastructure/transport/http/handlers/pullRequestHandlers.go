@@ -47,7 +47,21 @@ func (h *Handlers) MergePullRequest(w http.ResponseWriter, r *http.Request) {
 }
 
 func (h *Handlers) ReassignPullRequest(w http.ResponseWriter, r *http.Request) {
+	req, err := decodeReassignPRRequest(r)
+	if err != nil {
+		logrus.Errorf("failed to decode JSON: %v", err)
+		sendErrorResponse(w, r, http.StatusBadRequest, "NOT_FOUND", "Invalid request format")
+		return
+	}
 
+	pullRequest, err := h.PullRequestUC.Reassign(req.PullRequestID, req.OldUserID)
+	if err != nil {
+		// TODO: handle errors
+		return
+	}
+
+	resp := dto.NewReassignPRResponse(pullRequest)
+	sendOkResponse(w, r, http.StatusOK, resp)
 }
 
 func decodeCreatePullRequest(r *http.Request) (*dto.CreatePRRequest, error) {
@@ -60,6 +74,14 @@ func decodeCreatePullRequest(r *http.Request) (*dto.CreatePRRequest, error) {
 
 func decodeMergePRRequest(r *http.Request) (*dto.MergePRRequest, error) {
 	var req dto.MergePRRequest
+	if err := render.DecodeJSON(r.Body, &req); err != nil {
+		return nil, err
+	}
+	return &req, nil
+}
+
+func decodeReassignPRRequest(r *http.Request) (*dto.ReassignPRRequest, error) {
+	var req dto.ReassignPRRequest
 	if err := render.DecodeJSON(r.Body, &req); err != nil {
 		return nil, err
 	}

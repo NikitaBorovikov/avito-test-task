@@ -22,6 +22,11 @@ type MergePRRequest struct {
 	PullRequestID string `json:"pull_request_id"`
 }
 
+type ReassignPRRequest struct {
+	PullRequestID string `json:"pull_request_id"`
+	OldUserID     string `json:"old_reviewer_id"`
+}
+
 type Member struct {
 	UserID   string `json:"user_id"`
 	Username string `json:"username"`

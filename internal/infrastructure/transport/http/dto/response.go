@@ -51,6 +51,10 @@ type CreatePRResponse struct {
 	PullRequest PullRequest `json:"pr"`
 }
 
+type ReassignPRResponse struct {
+	PullRequest PullRequest `json:"pr"`
+}
+
 type PullRequest struct {
 	PullRequestID     string          `json:"pull_request_id"`
 	PullRequestName   string          `json:"pull_request_name"`
@@ -185,6 +189,22 @@ func NewMergePRResponse(pr *models.PullRequest) *MergePRResponse {
 			Status:            pr.Status,
 			AssignedReviewers: pr.Reviewers,
 			MergedAt:          pr.MergedAt,
+		},
+	}
+}
+
+func NewReassignPRResponse(pr *models.PullRequest) *ReassignPRResponse {
+	if pr == nil {
+		return nil
+	}
+
+	return &ReassignPRResponse{
+		PullRequest: PullRequest{
+			PullRequestID:     pr.ID,
+			PullRequestName:   pr.Title,
+			AuthorID:          pr.AuthorID,
+			Status:            pr.Status,
+			AssignedReviewers: pr.Reviewers,
 		},
 	}
 }

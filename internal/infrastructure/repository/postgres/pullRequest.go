@@ -24,3 +24,7 @@ func (r *PullRequestRepo) GetByReviewer(userID string) ([]models.PullRequest, er
 func (r *PullRequestRepo) Merge(prID string) (*models.PullRequest, error) {
 	return nil, nil
 }
+
+func (r *PullRequestRepo) Reassign(prID, oldUserID string) (*models.PullRequest, error) {
+	return nil, nil
+}
