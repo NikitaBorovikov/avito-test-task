@@ -31,6 +31,7 @@ func (uc *TeamUC) Create(team *models.Team) (*models.Team, error) {
 
 		// Create or update user
 		if err := uc.UserRepo.CreateOrUpdate(user); err != nil {
+			// При удалении команды каскадно удаляться все ее учатники
 			if err := uc.TeamRepo.Delete(createdTeam.ID); err != nil {
 				return nil, fmt.Errorf("failed to save user and rollback team: %v", err)
 			}
