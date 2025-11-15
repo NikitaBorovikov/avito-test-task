@@ -16,11 +16,7 @@ func NewPullRequestUC(pullRequestRepo repository.PullRequestRepo) *PullRequestUC
 }
 
 func (uc *PullRequestUC) Create(pr *models.PullRequest) (*models.PullRequest, error) {
-	return nil, nil
-}
-
-func (uc *PullRequestUC) Update(pr *models.PullRequest) (*models.PullRequest, error) {
-	return nil, nil
+	return uc.PullRequestRepo.Create(pr)
 }
 
 func (uc *PullRequestUC) GetByReviewer(userID string) ([]models.PullRequest, error) {
