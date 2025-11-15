@@ -24,7 +24,9 @@ func (h *Handlers) GetUserReviewPR(w http.ResponseWriter, r *http.Request) {
 
 	prs, err := h.PullRequestUC.GetByReviewer(userID)
 	if err != nil {
-		// TODO: handle error
+		logrus.Errorf("failed to get pull requests: %v", err)
+		errCode, errMsg := apperrors.HandleError(err)
+		sendErrorResponse(w, r, http.StatusBadRequest, errCode, errMsg)
 		return
 	}
 
@@ -48,11 +50,13 @@ func (h *Handlers) SetUserActive(w http.ResponseWriter, r *http.Request) {
 
 	user, err := h.UserUC.SetUserActive(req.UserID, req.IsActive)
 	if err != nil {
-		// TODO: handle errors
+		logrus.Errorf("failed to set user active: %v", err)
+		errCode, errMsg := apperrors.HandleError(err)
+		sendErrorResponse(w, r, http.StatusBadRequest, errCode, errMsg)
 		return
 	}
 
-	// Get team name from DB
+	// Get team name from DB !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!11
 	teamName := "backend"
 	resp := dto.NewSetUserActiveResponse(teamName, user)
 	sendOkResponse(w, r, http.StatusOK, resp)
