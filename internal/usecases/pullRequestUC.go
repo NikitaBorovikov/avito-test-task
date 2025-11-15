@@ -24,7 +24,7 @@ func (uc *PullRequestUC) Update(pr *models.PullRequest) (*models.PullRequest, er
 }
 
 func (uc *PullRequestUC) GetByReviewer(userID string) ([]models.PullRequest, error) {
-	return nil, nil
+	return uc.PullRequestRepo.GetByReviewer(userID)
 }
 
 func (uc *PullRequestUC) Merge(prID string) (*models.PullRequest, error) {
