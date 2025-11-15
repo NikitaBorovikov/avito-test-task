@@ -1,12 +1,19 @@
 package postgres
 
-import "avitoTestTask/internal/core/models"
+import (
+	"avitoTestTask/internal/core/models"
+
+	"gorm.io/gorm"
+)
 
 type PullRequestRepo struct {
+	db *gorm.DB
 }
 
-func NewPullRequestRepo() *PullRequestRepo {
-	return &PullRequestRepo{}
+func NewPullRequestRepo(db *gorm.DB) *PullRequestRepo {
+	return &PullRequestRepo{
+		db: db,
+	}
 }
 
 func (r *PullRequestRepo) Create(pr *models.PullRequest) (*models.PullRequest, error) {

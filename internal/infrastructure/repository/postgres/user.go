@@ -1,12 +1,19 @@
 package postgres
 
-import "avitoTestTask/internal/core/models"
+import (
+	"avitoTestTask/internal/core/models"
+
+	"gorm.io/gorm"
+)
 
 type UserRepo struct {
+	db *gorm.DB
 }
 
-func NewUserRepo() *UserRepo {
-	return &UserRepo{}
+func NewUserRepo(db *gorm.DB) *UserRepo {
+	return &UserRepo{
+		db: db,
+	}
 }
 
 func (r *UserRepo) CreateOrUpdate(user *models.User) error {

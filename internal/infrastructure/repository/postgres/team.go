@@ -1,12 +1,19 @@
 package postgres
 
-import "avitoTestTask/internal/core/models"
+import (
+	"avitoTestTask/internal/core/models"
+
+	"gorm.io/gorm"
+)
 
 type TeamRepo struct {
+	db *gorm.DB
 }
 
-func NewTeamRepo() *TeamRepo {
-	return &TeamRepo{}
+func NewTeamRepo(db *gorm.DB) *TeamRepo {
+	return &TeamRepo{
+		db: db,
+	}
 }
 
 func (r *TeamRepo) Create(team *models.Team) (*models.Team, error) {

@@ -1,15 +1,17 @@
 package postgres
 
+import "gorm.io/gorm"
+
 type PostgresRepo struct {
 	UserRepo        *UserRepo
 	TeamRepo        *TeamRepo
 	PullRequestRepo *PullRequestRepo
 }
 
-func NewPostgresRepo() *PostgresRepo {
+func NewPostgresRepo(db *gorm.DB) *PostgresRepo {
 	return &PostgresRepo{
-		UserRepo:        NewUserRepo(),
-		TeamRepo:        NewTeamRepo(),
-		PullRequestRepo: NewPullRequestRepo(),
+		UserRepo:        NewUserRepo(db),
+		TeamRepo:        NewTeamRepo(db),
+		PullRequestRepo: NewPullRequestRepo(db),
 	}
 }
