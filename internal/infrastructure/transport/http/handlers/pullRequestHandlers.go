@@ -16,8 +16,13 @@ func (h *Handlers) CreatePullRequest(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	pr := req.ToDomainPR()
+	if err := req.Validate(); err != nil {
+		logrus.Errorf("validate error: %v", err)
+		sendErrorResponse(w, r, http.StatusBadRequest, "NOT_FOUND", err.Error())
+		return
+	}
 
+	pr := req.ToDomainPR()
 	pullRequest, err := h.PullRequestUC.Create(&pr)
 	if err != nil {
 		// TODO: handle errors
@@ -36,6 +41,12 @@ func (h *Handlers) MergePullRequest(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	if err := req.Validate(); err != nil {
+		logrus.Errorf("validate error: %v", err)
+		sendErrorResponse(w, r, http.StatusBadRequest, "NOT_FOUND", err.Error())
+		return
+	}
+
 	pullRequest, err := h.PullRequestUC.Merge(req.PullRequestID)
 	if err != nil {
 		// TODO: handle errors
@@ -51,6 +62,12 @@ func (h *Handlers) ReassignPullRequest(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		logrus.Errorf("failed to decode JSON: %v", err)
 		sendErrorResponse(w, r, http.StatusBadRequest, "NOT_FOUND", "Invalid request format")
+		return
+	}
+
+	if err := req.Validate(); err != nil {
+		logrus.Errorf("validate error: %v", err)
+		sendErrorResponse(w, r, http.StatusBadRequest, "NOT_FOUND", err.Error())
 		return
 	}
 

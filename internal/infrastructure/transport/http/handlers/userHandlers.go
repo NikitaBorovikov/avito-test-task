@@ -15,6 +15,12 @@ const (
 func (h *Handlers) GetUserReviewPR(w http.ResponseWriter, r *http.Request) {
 	userID := r.URL.Query().Get(userIDQueryParam)
 
+	if err := dto.ValidateUserID(userID); err != nil {
+		logrus.Errorf("validate error: %v", err)
+		sendErrorResponse(w, r, http.StatusBadRequest, "NOT_FOUND", err.Error())
+		return
+	}
+
 	prs, err := h.PullRequestUC.GetByReviewer(userID)
 	if err != nil {
 		// TODO: handle error
@@ -30,6 +36,12 @@ func (h *Handlers) SetUserActive(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		logrus.Errorf("failed to decode JSON: %v", err)
 		sendErrorResponse(w, r, http.StatusBadRequest, "NOT_FOUND", "Invalid request format")
+		return
+	}
+
+	if err := req.Validate(); err != nil {
+		logrus.Errorf("validate error: %v", err)
+		sendErrorResponse(w, r, http.StatusBadRequest, "NOT_FOUND", err.Error())
 		return
 	}
 

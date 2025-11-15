@@ -14,7 +14,7 @@ type Member struct {
 	IsActive bool   `json:"is_active"`
 }
 
-func (r *CreateTeamRequest) ToDomainTeam() models.Team {
+func (r *CreateTeamRequest) ToDomainTeam() *models.Team {
 	users := make([]models.User, 0, len(r.Members))
 
 	for _, member := range r.Members {
@@ -26,7 +26,7 @@ func (r *CreateTeamRequest) ToDomainTeam() models.Team {
 		users = append(users, user)
 	}
 
-	return models.Team{
+	return &models.Team{
 		Name:  r.TeamName,
 		Users: users,
 	}
@@ -45,7 +45,7 @@ type MergePRRequest struct {
 
 type ReassignPRRequest struct {
 	PullRequestID string `json:"pull_request_id"`
-	OldUserID     string `json:"old_reviewer_id"`
+	OldUserID     string `json:"old_user_id"`
 }
 
 func (r *CreatePRRequest) ToDomainPR() models.PullRequest {
