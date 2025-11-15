@@ -1,6 +1,7 @@
 package handlers
 
 import (
+	apperrors "avitoTestTask/internal/appErrors"
 	"avitoTestTask/internal/infrastructure/transport/http/dto"
 	"net/http"
 
@@ -17,7 +18,7 @@ func (h *Handlers) GetUserReviewPR(w http.ResponseWriter, r *http.Request) {
 
 	if err := dto.ValidateUserID(userID); err != nil {
 		logrus.Errorf("validate error: %v", err)
-		sendErrorResponse(w, r, http.StatusBadRequest, "NOT_FOUND", err.Error())
+		sendErrorResponse(w, r, http.StatusBadRequest, apperrors.ErrorCodeNotFound, err.Error())
 		return
 	}
 
@@ -35,13 +36,13 @@ func (h *Handlers) SetUserActive(w http.ResponseWriter, r *http.Request) {
 	req, err := decodeSetUserActiveReq(r)
 	if err != nil {
 		logrus.Errorf("failed to decode JSON: %v", err)
-		sendErrorResponse(w, r, http.StatusBadRequest, "NOT_FOUND", "Invalid request format")
+		sendErrorResponse(w, r, http.StatusBadRequest, apperrors.ErrorCodeNotFound, "Invalid request format")
 		return
 	}
 
 	if err := req.Validate(); err != nil {
 		logrus.Errorf("validate error: %v", err)
-		sendErrorResponse(w, r, http.StatusBadRequest, "NOT_FOUND", err.Error())
+		sendErrorResponse(w, r, http.StatusBadRequest, apperrors.ErrorCodeNotFound, err.Error())
 		return
 	}
 
