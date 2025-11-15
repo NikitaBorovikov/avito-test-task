@@ -41,6 +41,12 @@ func (h *Handlers) CreateTeam(w http.ResponseWriter, r *http.Request) {
 func (h *Handlers) GetTeamByName(w http.ResponseWriter, r *http.Request) {
 	teamName := r.URL.Query().Get(getTeamQueryParam)
 
+	if err := dto.ValidateTeamName(teamName); err != nil {
+		logrus.Errorf("validate error: %v", err)
+		sendErrorResponse(w, r, http.StatusBadRequest, "NOT_FOUND", err.Error())
+		return
+	}
+
 	team, err := h.TeamUC.GetByName(teamName)
 	if err != nil {
 		// TODO: handle err

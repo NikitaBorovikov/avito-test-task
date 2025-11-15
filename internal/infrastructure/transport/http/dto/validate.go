@@ -17,8 +17,8 @@ var (
 )
 
 func (r *CreateTeamRequest) Validate() error {
-	if r.TeamName == "" || len(r.TeamName) > maxTeamNameLen {
-		return ErrInvalidTeamName
+	if err := ValidateTeamName(r.TeamName); err != nil {
+		return err
 	}
 
 	if len(r.Members) == 0 || len(r.Members) > maxAmountOfTeamMembers {
@@ -40,6 +40,13 @@ func (m *Member) Validate() error {
 
 	if m.Username == "" || len(m.Username) > maxUsernameLen {
 		return ErrInvalidUsername
+	}
+	return nil
+}
+
+func ValidateTeamName(name string) error {
+	if name == "" || len(name) > maxTeamNameLen {
+		return ErrInvalidTeamName
 	}
 	return nil
 }
