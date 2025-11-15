@@ -41,6 +41,12 @@ func (h *Handlers) MergePullRequest(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	if err := req.Validate(); err != nil {
+		logrus.Errorf("validate error: %v", err)
+		sendErrorResponse(w, r, http.StatusBadRequest, "NOT_FOUND", err.Error())
+		return
+	}
+
 	pullRequest, err := h.PullRequestUC.Merge(req.PullRequestID)
 	if err != nil {
 		// TODO: handle errors

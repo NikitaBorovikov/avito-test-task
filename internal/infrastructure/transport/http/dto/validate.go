@@ -57,6 +57,10 @@ func (r *CreatePRRequest) Validate() error {
 	return nil
 }
 
+func (r *MergePRRequest) Validate() error {
+	return ValidatePRID(r.PullRequestID)
+}
+
 func (m *Member) Validate() error {
 	if err := ValidateUserID(m.UserID); err != nil {
 		return err
