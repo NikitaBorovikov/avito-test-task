@@ -34,12 +34,11 @@ func (r *CreateTeamRequest) Validate() error {
 }
 
 func (m *Member) Validate() error {
-	if m.UserID == "" || len(m.UserID) > maxUserIDLen {
-		return ErrInvalidUserID
+	if err := ValidateUserID(m.UserID); err != nil {
+		return err
 	}
-
-	if m.Username == "" || len(m.Username) > maxUsernameLen {
-		return ErrInvalidUsername
+	if err := ValidateUsername(m.Username); err != nil {
+		return err
 	}
 	return nil
 }
@@ -47,6 +46,20 @@ func (m *Member) Validate() error {
 func ValidateTeamName(name string) error {
 	if name == "" || len(name) > maxTeamNameLen {
 		return ErrInvalidTeamName
+	}
+	return nil
+}
+
+func ValidateUserID(userID string) error {
+	if userID == "" || len(userID) > maxUserIDLen {
+		return ErrInvalidUserID
+	}
+	return nil
+}
+
+func ValidateUsername(username string) error {
+	if username == "" || len(username) > maxUsernameLen {
+		return ErrInvalidUsername
 	}
 	return nil
 }
