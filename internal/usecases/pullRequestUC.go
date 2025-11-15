@@ -28,7 +28,7 @@ func (uc *PullRequestUC) GetByReviewer(userID string) ([]models.PullRequest, err
 }
 
 func (uc *PullRequestUC) Merge(prID string) (*models.PullRequest, error) {
-	return nil, nil
+	return uc.PullRequestRepo.Merge(prID)
 }
 
 func (uc *PullRequestUC) Reassign(prID, oldUserID string) (*models.PullRequest, error) {
