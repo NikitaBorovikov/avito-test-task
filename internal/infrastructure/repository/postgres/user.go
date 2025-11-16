@@ -39,7 +39,7 @@ func (r *UserRepo) GetByID(userID string) (*models.User, error) {
 
 func (r *UserRepo) GetActiveUsersByTeam(teamID uint) ([]models.User, error) {
 	var users []models.User
-	err := r.db.Where("team_id = ? AND is_active = ?", teamID, true).First(&users).Error
+	err := r.db.Where("team_id = ? AND is_active = ?", teamID, true).Find(&users).Error
 	if err != nil {
 		return nil, err
 	}
