@@ -1,4 +1,4 @@
-.PHONY: up down build rebuild lint
+.PHONY: up down build rebuild lint lint-fix
 
 up:
 	docker-compose up
