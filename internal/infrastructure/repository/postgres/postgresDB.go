@@ -14,6 +14,7 @@ type PostgresRepo struct {
 	UserRepo        *UserRepo
 	TeamRepo        *TeamRepo
 	PullRequestRepo *PullRequestRepo
+	StatsRepo       *StatsRepo
 }
 
 func NewPostgresRepo(db *gorm.DB) *PostgresRepo {
@@ -21,6 +22,7 @@ func NewPostgresRepo(db *gorm.DB) *PostgresRepo {
 		UserRepo:        NewUserRepo(db),
 		TeamRepo:        NewTeamRepo(db),
 		PullRequestRepo: NewPullRequestRepo(db),
+		StatsRepo:       NewStatsRepo(db),
 	}
 }
 

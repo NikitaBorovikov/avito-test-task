@@ -199,3 +199,31 @@ func NewSetUserActiveResponse(teamName string, user *models.User) *SetUserActive
 		},
 	}
 }
+
+// Stats DTO
+type GetReviewerStatsResponse struct {
+	Reviewers []ReviewerStats `json:"reviewers"`
+}
+
+type ReviewerStats struct {
+	UserID     string `json:"user_id"`
+	Username   string `json:"username"`
+	AmountOfPR int    `json:"amount_of_pr"`
+}
+
+func NewGetReviewerStatsResponse(stats []models.ReviewerStats) *GetReviewerStatsResponse {
+	reviewerStats := make([]ReviewerStats, 0, len(stats))
+
+	for _, r := range stats {
+		rs := ReviewerStats{
+			UserID:     r.UserID,
+			Username:   r.Username,
+			AmountOfPR: r.AmountOfPR,
+		}
+		reviewerStats = append(reviewerStats, rs)
+	}
+
+	return &GetReviewerStatsResponse{
+		Reviewers: reviewerStats,
+	}
+}

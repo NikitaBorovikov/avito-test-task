@@ -25,5 +25,7 @@ func initRoutes(h *handlers.Handlers) *chi.Mux {
 	r.Post("/pullRequest/merge", h.MergePullRequest)
 	r.Post("/pullRequest/reassign", h.ReassignPullRequest)
 
+	r.Get("/stats/reviewer", h.GetReviewerStats)
+
 	return r
 }
