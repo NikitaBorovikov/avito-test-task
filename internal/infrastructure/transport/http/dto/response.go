@@ -88,6 +88,7 @@ type CreatePRResponse struct {
 
 type ReassignPRResponse struct {
 	PullRequest PullRequest `json:"pr"`
+	ReplacedBy  string      `json:"replaced_by"`
 }
 
 type MergePRResponse struct {
@@ -134,7 +135,7 @@ func NewMergePRResponse(pr *models.PullRequest) *MergePRResponse {
 	}
 }
 
-func NewReassignPRResponse(pr *models.PullRequest) *ReassignPRResponse {
+func NewReassignPRResponse(pr *models.PullRequest, oldUserID string) *ReassignPRResponse {
 	if pr == nil {
 		return nil
 	}
@@ -146,6 +147,7 @@ func NewReassignPRResponse(pr *models.PullRequest) *ReassignPRResponse {
 			Status:            pr.Status,
 			AssignedReviewers: pr.Reviewers,
 		},
+		ReplacedBy: oldUserID,
 	}
 }
 
