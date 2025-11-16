@@ -9,6 +9,7 @@ import (
 
 var (
 	ErrDublicatePRID = errors.New("pull request with this ID already exists")
+	ErrPRNotFound    = errors.New("pull request with this ID is not found")
 )
 
 type PullRequestRepo struct {
@@ -36,7 +37,14 @@ func (r *PullRequestRepo) GetByReviewer(userID string) ([]models.PullRequest, er
 }
 
 func (r *PullRequestRepo) GetByID(prID string) (*models.PullRequest, error) {
-	return nil, nil
+	var pr models.PullRequest
+	if err := r.db.Where("id = ?", prID).First(&pr).Error; err != nil {
+		if errors.Is(err, gorm.ErrRecordNotFound) {
+			return nil, ErrPRNotFound
+		}
+		return nil, err
+	}
+	return &pr, nil
 }
 
 func (r *PullRequestRepo) Merge(prID string) (*models.PullRequest, error) {

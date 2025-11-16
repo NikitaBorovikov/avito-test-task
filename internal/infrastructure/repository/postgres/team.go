@@ -7,10 +7,6 @@ import (
 	"gorm.io/gorm"
 )
 
-const (
-	PostgresUniqueErrorCode = "23505"
-)
-
 var (
 	ErrDublicateTeamName = errors.New("team with that name already exists")
 	ErrTeamNotFound      = errors.New("team with this ID is not found")

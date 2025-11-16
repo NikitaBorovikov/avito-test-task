@@ -7,6 +7,10 @@ import (
 	"gorm.io/gorm"
 )
 
+const (
+	PostgresUniqueErrorCode = "23505"
+)
+
 type PostgresRepo struct {
 	UserRepo        *UserRepo
 	TeamRepo        *TeamRepo
