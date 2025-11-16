@@ -12,6 +12,7 @@ type Handlers struct {
 	UserUC        *usecases.UserUC
 	TeamUC        *usecases.TeamUC
 	PullRequestUC *usecases.PullRequestUC
+	StatsUC       *usecases.StatsUC
 }
 
 func NewHandlers(uc *usecases.UseCases) *Handlers {
@@ -19,6 +20,7 @@ func NewHandlers(uc *usecases.UseCases) *Handlers {
 		UserUC:        uc.UserUC,
 		TeamUC:        uc.TeamUC,
 		PullRequestUC: uc.PullRequestUC,
+		StatsUC:       uc.StatsUC,
 	}
 }
 

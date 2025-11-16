@@ -20,12 +20,12 @@ func (r *StatsRepo) GetReviewerStats() ([]models.ReviewerStats, error) {
 	var reviewerStats []models.ReviewerStats
 
 	err := r.db.Raw(`
-		SELECT u.id as user_id, u.name as user_name, COUNT(pr.id) as count
+		SELECT u.id as user_id, u.name as username, COUNT(pr.id) as amount_of_pr
         FROM users u
-        LEFT JOIN pull_requests pr ON u.id = ANY(pr.reviewers)
+        LEFT JOIN pull_requests pr ON pr.reviewers @> jsonb_build_array(u.id)
         WHERE u.is_active = true
         GROUP BY u.id, u.name
-        ORDER BY count DESC
+        ORDER BY amount_of_pr DESC
 	`).Scan(&reviewerStats).Error
 	if err != nil {
 		return nil, err
