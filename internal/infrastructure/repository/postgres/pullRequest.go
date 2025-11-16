@@ -1,17 +1,13 @@
 package postgres
 
 import (
+	apperrors "avitoTestTask/internal/appErrors"
 	"avitoTestTask/internal/core/models"
 	"errors"
 	"fmt"
 	"time"
 
 	"gorm.io/gorm"
-)
-
-var (
-	ErrDublicatePRID = errors.New("pull request with this ID already exists")
-	ErrPRNotFound    = errors.New("pull request with this ID is not found")
 )
 
 type PullRequestRepo struct {
@@ -27,7 +23,7 @@ func NewPullRequestRepo(db *gorm.DB) *PullRequestRepo {
 func (r *PullRequestRepo) Create(pr *models.PullRequest) (*models.PullRequest, error) {
 	if err := r.db.Create(pr).Error; err != nil {
 		if isDublicateError(err) {
-			return nil, ErrDublicatePRID
+			return nil, apperrors.ErrDuplicatePRID
 		}
 		return nil, err
 	}
@@ -52,7 +48,7 @@ func (r *PullRequestRepo) GetByID(prID string) (*models.PullRequest, error) {
 	var pr models.PullRequest
 	if err := r.db.Where("id = ?", prID).First(&pr).Error; err != nil {
 		if errors.Is(err, gorm.ErrRecordNotFound) {
-			return nil, ErrPRNotFound
+			return nil, apperrors.ErrPRNotFound
 		}
 		return nil, err
 	}
@@ -68,7 +64,7 @@ func (r *PullRequestRepo) Merge(prID string, merged_at time.Time) error {
 		return res.Error
 	}
 	if res.RowsAffected == 0 {
-		return ErrPRNotFound
+		return apperrors.ErrPRNotFound
 	}
 	return nil
 }

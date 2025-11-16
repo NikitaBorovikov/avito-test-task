@@ -1,17 +1,11 @@
 package usecases
 
 import (
+	apperrors "avitoTestTask/internal/appErrors"
 	"avitoTestTask/internal/core/models"
 	"avitoTestTask/internal/core/repository"
-	"errors"
 	"math/rand"
 	"time"
-)
-
-var (
-	ErrAlreadyMerged = errors.New("already merged")
-	ErrNoCandidate   = errors.New("there aren't available candidates")
-	ErrNotAssigned   = errors.New("user is not assigned to this pull request")
 )
 
 type PullRequestUC struct {
@@ -72,10 +66,10 @@ func (uc *PullRequestUC) Reassign(prID, oldUserID string) (*models.PullRequest, 
 		return nil, err
 	}
 	if pr.Status == models.PRStatusMerged {
-		return nil, ErrAlreadyMerged
+		return nil, apperrors.ErrAlreadyMerged
 	}
 	if !isUserInReviewers(oldUserID, pr.Reviewers) {
-		return nil, ErrNotAssigned
+		return nil, apperrors.ErrNotAssigned
 	}
 
 	oldUser, err := uc.UserRepo.GetByID(oldUserID)
@@ -109,7 +103,7 @@ func (uc *PullRequestUC) findRandomReplacement(authorID string, teamID uint, exi
 	}
 
 	if len(candidates) == 0 {
-		return "", ErrNoCandidate
+		return "", apperrors.ErrNoCandidate
 	}
 	return candidates[rand.Intn(len(candidates))], nil
 }
@@ -128,7 +122,7 @@ func (uc *PullRequestUC) setReviewers(teamID uint, authorID string) ([]string, e
 	}
 
 	if len(candidates) == 0 {
-		return nil, ErrNoCandidate
+		return nil, apperrors.ErrNoCandidate
 	}
 
 	rand.Shuffle(len(candidates), func(i, j int) {

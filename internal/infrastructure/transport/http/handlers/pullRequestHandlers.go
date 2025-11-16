@@ -27,8 +27,8 @@ func (h *Handlers) CreatePullRequest(w http.ResponseWriter, r *http.Request) {
 	pullRequest, err := h.PullRequestUC.Create(&pr)
 	if err != nil {
 		logrus.Errorf("failed to create pull request: %v", err)
-		errCode, errMsg := apperrors.HandleError(err)
-		sendErrorResponse(w, r, http.StatusBadRequest, errCode, errMsg)
+		errInfo := apperrors.HandleError(err)
+		sendErrorResponse(w, r, errInfo.HttdCode, errInfo.Code, errInfo.Msg)
 		return
 	}
 
@@ -53,8 +53,8 @@ func (h *Handlers) MergePullRequest(w http.ResponseWriter, r *http.Request) {
 	pullRequest, err := h.PullRequestUC.Merge(req.PullRequestID)
 	if err != nil {
 		logrus.Errorf("failed to merge pull request: %v", err)
-		errCode, errMsg := apperrors.HandleError(err)
-		sendErrorResponse(w, r, http.StatusBadRequest, errCode, errMsg)
+		errInfo := apperrors.HandleError(err)
+		sendErrorResponse(w, r, errInfo.HttdCode, errInfo.Code, errInfo.Msg)
 		return
 	}
 
@@ -79,8 +79,8 @@ func (h *Handlers) ReassignPullRequest(w http.ResponseWriter, r *http.Request) {
 	pullRequest, err := h.PullRequestUC.Reassign(req.PullRequestID, req.OldUserID)
 	if err != nil {
 		logrus.Errorf("failed to reassign pull request: %v", err)
-		errCode, errMsg := apperrors.HandleError(err)
-		sendErrorResponse(w, r, http.StatusBadRequest, errCode, errMsg)
+		errInfo := apperrors.HandleError(err)
+		sendErrorResponse(w, r, errInfo.HttdCode, errInfo.Code, errInfo.Msg)
 		return
 	}
 

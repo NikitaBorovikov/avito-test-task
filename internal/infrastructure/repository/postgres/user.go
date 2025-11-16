@@ -1,14 +1,11 @@
 package postgres
 
 import (
+	apperrors "avitoTestTask/internal/appErrors"
 	"avitoTestTask/internal/core/models"
 	"errors"
 
 	"gorm.io/gorm"
-)
-
-var (
-	ErrUserNotFound = errors.New("user with this ID is not found")
 )
 
 type UserRepo struct {
@@ -30,7 +27,7 @@ func (r *UserRepo) GetByID(userID string) (*models.User, error) {
 	var user models.User
 	if err := r.db.Where("id = ?", userID).First(&user).Error; err != nil {
 		if errors.Is(err, gorm.ErrRecordNotFound) {
-			return nil, ErrUserNotFound
+			return nil, apperrors.ErrUserNotFound
 		}
 		return nil, err
 	}
@@ -53,7 +50,7 @@ func (r *UserRepo) SetUserActive(userID string, isActive bool) (*models.User, er
 		return nil, result.Error
 	}
 	if result.RowsAffected == 0 {
-		return nil, ErrUserNotFound
+		return nil, apperrors.ErrUserNotFound
 	}
 
 	updatedUser, err := r.GetByID(userID)
