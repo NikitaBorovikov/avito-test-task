@@ -15,14 +15,6 @@ func NewUserUC(userRepo repository.UserRepo) *UserUC {
 	}
 }
 
-func (uc *UserUC) CreateOrUpdate(user *models.User) error {
-	return nil
-}
-
-func (uc *UserUC) GetByID(userID string) (*models.User, error) {
-	return nil, nil
-}
-
 func (uc *UserUC) SetUserActive(userID string, isActive bool) (*models.User, error) {
 	return uc.UserRepo.SetUserActive(userID, isActive)
 }
