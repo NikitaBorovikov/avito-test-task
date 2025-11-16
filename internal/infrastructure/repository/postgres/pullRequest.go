@@ -22,7 +22,7 @@ func NewPullRequestRepo(db *gorm.DB) *PullRequestRepo {
 
 func (r *PullRequestRepo) Create(pr *models.PullRequest) (*models.PullRequest, error) {
 	if err := r.db.Create(pr).Error; err != nil {
-		if isDublicateError(err) {
+		if isDuplicateError(err) {
 			return nil, apperrors.ErrDuplicatePRID
 		}
 		return nil, err
@@ -72,6 +72,9 @@ func (r *PullRequestRepo) Merge(prID string, merged_at time.Time) error {
 func (r *PullRequestRepo) Reassign(prID, oldReviewerID, newReviewerID string) (*models.PullRequest, error) {
 	var pr models.PullRequest
 	if err := r.db.First(&pr, "id = ?", prID).Error; err != nil {
+		if errors.Is(err, gorm.ErrRecordNotFound) {
+			return nil, apperrors.ErrPRNotFound
+		}
 		return nil, err
 	}
 	for i, reviewer := range pr.Reviewers {

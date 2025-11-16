@@ -84,7 +84,7 @@ func (h *Handlers) ReassignPullRequest(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	resp := dto.NewReassignPRResponse(pullRequest)
+	resp := dto.NewReassignPRResponse(pullRequest, req.OldUserID)
 	sendOkResponse(w, r, http.StatusOK, resp)
 }
 

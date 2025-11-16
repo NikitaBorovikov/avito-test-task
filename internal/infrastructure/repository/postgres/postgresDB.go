@@ -1,9 +1,8 @@
 package postgres
 
 import (
-	"errors"
+	"strings"
 
-	"github.com/lib/pq"
 	"gorm.io/gorm"
 )
 
@@ -25,10 +24,6 @@ func NewPostgresRepo(db *gorm.DB) *PostgresRepo {
 	}
 }
 
-func isDublicateError(err error) bool {
-	var pqErr *pq.Error
-	if errors.As(err, &pqErr) {
-		return pqErr.Code == PostgresUniqueErrorCode
-	}
-	return false
+func isDuplicateError(err error) bool {
+	return strings.Contains(err.Error(), PostgresUniqueErrorCode)
 }
