@@ -6,12 +6,14 @@ type UseCases struct {
 	UserUC        *UserUC
 	TeamUC        *TeamUC
 	PullRequestUC *PullRequestUC
+	StatsUC       *StatsUC
 }
 
-func NewUseCases(userRepo repository.UserRepo, teamRepo repository.TeamRepo, prRepo repository.PullRequestRepo) *UseCases {
+func NewUseCases(userRepo repository.UserRepo, teamRepo repository.TeamRepo, prRepo repository.PullRequestRepo, statsRepo repository.StatsRepo) *UseCases {
 	return &UseCases{
 		UserUC:        NewUserUC(userRepo),
 		TeamUC:        NewTeamUC(teamRepo, userRepo),
 		PullRequestUC: NewPullRequestUC(prRepo, userRepo),
+		StatsUC:       NewStatsUC(statsRepo),
 	}
 }
