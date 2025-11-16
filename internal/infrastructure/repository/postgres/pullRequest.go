@@ -22,7 +22,7 @@ func NewPullRequestRepo(db *gorm.DB) *PullRequestRepo {
 
 func (r *PullRequestRepo) Create(pr *models.PullRequest) (*models.PullRequest, error) {
 	if err := r.db.Create(pr).Error; err != nil {
-		if isDublicateError(err) {
+		if isDuplicateError(err) {
 			return nil, apperrors.ErrDuplicatePRID
 		}
 		return nil, err

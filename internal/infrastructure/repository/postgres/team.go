@@ -20,7 +20,7 @@ func NewTeamRepo(db *gorm.DB) *TeamRepo {
 
 func (r *TeamRepo) Create(team *models.Team) (*models.Team, error) {
 	if err := r.db.Create(team).Error; err != nil {
-		if isDublicateError(err) {
+		if isDuplicateError(err) {
 			return nil, apperrors.ErrDuplicateTeamName
 		}
 		return nil, err
