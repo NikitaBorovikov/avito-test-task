@@ -3,6 +3,7 @@ package postgres
 import (
 	"avitoTestTask/internal/core/models"
 	"errors"
+	"fmt"
 	"time"
 
 	"gorm.io/gorm"
@@ -34,7 +35,17 @@ func (r *PullRequestRepo) Create(pr *models.PullRequest) (*models.PullRequest, e
 }
 
 func (r *PullRequestRepo) GetByReviewer(userID string) ([]models.PullRequest, error) {
-	return nil, nil
+	var prs []models.PullRequest
+	err := r.db.
+		Preload("Author").
+		Preload("Author.Team").
+		Where("reviewers @> ?", fmt.Sprintf(`["%s"]`, userID)).
+		Find(&prs).Error
+
+	if err != nil {
+		return nil, err
+	}
+	return prs, nil
 }
 
 func (r *PullRequestRepo) GetByID(prID string) (*models.PullRequest, error) {
