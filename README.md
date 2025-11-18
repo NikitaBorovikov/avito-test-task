@@ -18,7 +18,7 @@
 ### 1. Клонирование репозитория
 ```
 git clone https://github.com/NikitaBorovikov/avito-test-task
-cd avito-task
+cd avito-test-task
 ```
 ### 2. Установка переменных окружения
 Скопируйте шаблон .env файла и заполните его своими значениями.
@@ -27,8 +27,9 @@ cp .env.example .env
 ```
 ### 3. Запуск сервиса
 ```
-make up
+make up 
 ```
+Или введите команду docker-compose up
 ### 4. Команды управления
 ```
 make up          # Запуск сервиса
@@ -49,3 +50,4 @@ make lint        # Проверка кода
 - Все endpoints работают корректно. 
 
 - [Скриншоты результатов](images/Нагрузочное_Тестирование1.png)
+
